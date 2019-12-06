@@ -34,5 +34,3 @@ void save_Pose(std::string filename, std::vector<MotionData> pose);
 void save_Pose_asTUM(std::string filename, std::vector<MotionData> pose);
 
 #endif //IMUSIMWITHPOINTLINE_UTILITIES_H
-
-
