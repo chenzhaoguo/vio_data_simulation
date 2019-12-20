@@ -1,9 +1,7 @@
-//
-// Created by hyj on 18-1-19.
-//
 #include "utilities.h"
 
-void save_points(std::string filename, std::vector<Eigen::Vector4d, Eigen::aligned_allocator<Eigen::Vector4d> > points) {
+void save_points(std::string filename, 
+                 std::vector<Eigen::Vector4d, Eigen::aligned_allocator<Eigen::Vector4d> > points) {
   std::ofstream save_points;
   save_points.open(filename.c_str());
 
@@ -30,8 +28,7 @@ void save_features(std::string filename,
                 << p(2) << " "
                 << p(3) << " "
                 << f(0) << " "
-                << f(1) << " "
-                << std::endl;
+                << f(1) << std::endl;
   }
 }
 
@@ -45,12 +42,11 @@ void save_lines(std::string filename,
     save_points << f(0) << " "
                 << f(1) << " "
                 << f(2) << " "
-                << f(3) << " "
-                << std::endl;
+                << f(3) << std::endl;
   }
 }
 
-void LoadPose(std::string filename, std::vector<MotionData>& pose) {
+void LoadPose(std::string filename, std::vector<MotionData> &pose) {
   std::ifstream f;
   f.open(filename.c_str());
 
@@ -61,19 +57,17 @@ void LoadPose(std::string filename, std::vector<MotionData>& pose) {
 
   while (!f.eof()) {
     std::string s;
-    std::getline(f,s);
+    std::getline(f, s);
 
     if (!s.empty()) {
       std::stringstream ss;
       ss << s;
 
-      MotionData data;
       double time;
       Eigen::Quaterniond q;
       Eigen::Vector3d t;
       Eigen::Vector3d gyro;
       Eigen::Vector3d acc;
-
       ss >> time;
       ss >> q.w();
       ss >> q.x();
@@ -89,7 +83,7 @@ void LoadPose(std::string filename, std::vector<MotionData>& pose) {
       ss >> acc(1);
       ss >> acc(2);
 
-
+      MotionData data;
       data.timestamp = time;
       data.imu_gyro = gyro;
       data.imu_acc = acc;
@@ -125,8 +119,7 @@ void save_Pose(std::string filename, std::vector<MotionData> pose) {
                 << gyro(2) << " "
                 << acc(0) << " "
                 << acc(1) << " "
-                << acc(2) << " "
-                << std::endl;
+                << acc(2) << std::endl;
   }
 }
 
@@ -144,7 +137,7 @@ void save_Pose_asTUM(std::string filename, std::vector<MotionData> pose) {
     Eigen::Vector3d acc = data.imu_acc;
 
     save_points.precision(9);
-    save_points <<time<<" ";
+    save_points << time << " ";
     save_points.precision(5);
     save_points << t(0) << " "
                 << t(1) << " "
