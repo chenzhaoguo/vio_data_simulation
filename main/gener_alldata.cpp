@@ -96,7 +96,7 @@ int main() {
   // IMU model
   Param params;
   IMU imuGen(params);
-  // create imu data, imu pose gyro acc
+  // generate imu data
   std::vector<MotionData> imudata;
   std::vector<MotionData> imudata_noise;
   for (float t = params.t_start; t < params.t_end; ) {
@@ -111,8 +111,8 @@ int main() {
     t += 1.0/params.imu_frequency;
   }
   imuGen.init_velocity_ = imudata[0].imu_velocity;
-  imuGen.init_twb_ = imudata.at(0).twb;
-  imuGen.init_Rwb_ = imudata.at(0).Rwb;
+  imuGen.init_twb_ = imudata[0].twb;
+  imuGen.init_Rwb_ = imudata[0].Rwb;
   save_Pose("imu_pose.txt", imudata);
   save_Pose("imu_pose_noise.txt", imudata_noise);
 
