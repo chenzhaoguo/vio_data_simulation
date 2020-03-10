@@ -2,7 +2,7 @@
 #include "imu.h"
 #include "utilities.h"
 
-Eigen::Matrix3d euler2Rotation(Eigen::Vector3d eulerAngles) {
+Eigen::Matrix3d euler2Rotation(Eigen::Vector3d eulerAngles) {  // ZYX
   double roll = eulerAngles(0);
   double pitch = eulerAngles(1);
   double yaw = eulerAngles(2);
@@ -50,14 +50,26 @@ MotionData IMU::MotionModel(double t) {
   // Rotation
   double k_roll = 0.1;  // roll of body frame to world frame
   double k_pitch = 0.2;  // pitch of body frame to world frame
-  Eigen::Vector3d eulerAngles(k_roll * cos(t), k_pitch * sin(t), K*t);  // roll ~ [-0.1, 0.1], pitch ~ [-0.2, 0.2], yaw ~ [0, 2pi]
-  Eigen::Vector3d eulerAnglesRates(-k_roll * sin(t), k_pitch * cos(t), K);  // eulerAngles的导数：W系下的欧拉角速度
 
+  Eigen::Vector3d eulerAngles;
+  Eigen::Vector3d eulerAnglesRates;
+  if (t < 10) {
+    eulerAngles = Eigen::Vector3d(k_roll*cos(t), k_pitch*sin(t), K*t);  // roll ~ [-0.1, 0.1], pitch ~ [-0.2, 0.2], yaw ~ [0, pi]
+  } else {
+    eulerAngles = Eigen::Vector3d(k_roll*cos(t), k_pitch*sin(t), K*t-2*M_PI);  // roll ~ [-0.1, 0.1], pitch ~ [-0.2, 0.2], yaw ~ [-pi, 0]
+  }
+  eulerAnglesRates = Eigen::Vector3d(-k_roll*sin(t), k_pitch*cos(t), K);  // eulerAngles的导数：W系下的欧拉角速度
+  euler_angles_all_.insert(std::make_pair(t, eulerAngles));
   // generate gyro data
   Eigen::Vector3d imu_gyro = eulerRates2bodyRates(eulerAngles) * eulerAnglesRates;  // euler rates trans to body gyro
 
-  // generate acc data
-  Eigen::Matrix3d Rwb = euler2Rotation(eulerAngles);  // body frame to world frame
+  /// generate acc data
+  // Eigen::Matrix3d Rwb = euler2Rotation(eulerAngles);
+  Eigen::Matrix3d Rwb;  // body frame to world frame
+  /// 先绕x轴转动roll，再绕y轴转动pitch，最后绕z转动yaw
+  Rwb = Eigen::AngleAxisd(eulerAngles[2], Eigen::Vector3d::UnitZ()) *
+        Eigen::AngleAxisd(eulerAngles[1], Eigen::Vector3d::UnitY()) *
+        Eigen::AngleAxisd(eulerAngles[0], Eigen::Vector3d::UnitX());
   Eigen::Vector3d gn(0, 0, -9.81);  // gravity in navigation frame(ENU)
   Eigen::Vector3d imu_acc = Rwb.transpose() * (ddp - gn);
 
@@ -157,6 +169,8 @@ void IMU::testImu(std::string src, std::string dest) {
     Vw = Vw + acc_w * dt;
     */
 
+    Eigen::Vector3d euler = Quaterniond2EulerAngle(Qwb);  // output: roll/pitch/yaw
+
     //　按着imu postion, imu quaternion, cam postion, cam quaternion 的格式存储，由于没有cam，所以imu存了两次
     save_points << imu_pose_curr.timestamp << " "
                 << Qwb.w() << " "
@@ -172,7 +186,10 @@ void IMU::testImu(std::string src, std::string dest) {
                 << Qwb.z() << " "
                 << Pwb(0) << " "
                 << Pwb(1) << " "
-                << Pwb(2) << std::endl;
+                << Pwb(2) << " "
+                << euler[0] << " "
+                << euler[1] << " "
+                << euler[2] << std::endl;
   }
   std::cout << "test end" << std::endl;
 }

@@ -1,5 +1,28 @@
 #include "utilities.h"
 
+Eigen::Vector3d Quaterniond2EulerAngle(const Eigen::Quaterniond &q) {
+  Eigen::Vector3d euler;  // [roll, pitch, yaw]
+  /// roll (x-axis rotation)
+  double sinr_cosp = +2.0 * (q.w() * q.x() + q.y() * q.z());
+  double cosr_cosp = +1.0 - 2.0 * (q.x() * q.x() + q.y() * q.y());
+  euler[0] = atan2(sinr_cosp, cosr_cosp);
+
+  /// pitch (y-axis rotation)
+  double sinp = +2.0 * (q.w() * q.y() - q.z() * q.x());
+  if (fabs(sinp) >= 1) {
+    euler[1] = copysign(M_PI/2, sinp); // use 90 degrees if out of range
+  } else {
+    euler[1] = asin(sinp);
+  }
+
+  /// yaw (z-axis rotation)
+  double siny_cosp = +2.0 * (q.w() * q.z() + q.x() * q.y());
+  double cosy_cosp = +1.0 - 2.0 * (q.y() * q.y() + q.z() * q.z());
+  euler[2] = atan2(siny_cosp, cosy_cosp);
+
+  return euler;
+}
+
 void save_points(std::string filename, 
                  std::vector<Eigen::Vector4d, Eigen::aligned_allocator<Eigen::Vector4d> > points) {
   std::ofstream save_points;
@@ -102,6 +125,7 @@ void save_Pose(std::string filename, std::vector<MotionData> pose) {
     MotionData data = pose[i];
     double time = data.timestamp;
     Eigen::Quaterniond q(data.Rwb);
+    Eigen::Vector3d euler = Quaterniond2EulerAngle(q);  // output: roll/pitch/yaw
     Eigen::Vector3d t = data.twb;
     Eigen::Vector3d gyro = data.imu_gyro;
     Eigen::Vector3d acc = data.imu_acc;
@@ -119,7 +143,10 @@ void save_Pose(std::string filename, std::vector<MotionData> pose) {
                 << gyro(2) << " "
                 << acc(0) << " "
                 << acc(1) << " "
-                << acc(2) << std::endl;
+                << acc(2) << " "
+                << euler(0) << " "
+                << euler(1) << " "
+                << euler(2) << std::endl;
   }
 }
 
@@ -147,4 +174,19 @@ void save_Pose_asTUM(std::string filename, std::vector<MotionData> pose) {
                 << q.z() << " "
                 << q.w() << std::endl;
     }
+}
+
+void save_euler_angle(std::string filename, std::map<double, Eigen::Vector3d> &euler_angles) {
+  std::ofstream save_euler;
+  save_euler.open(filename.c_str());
+
+  for (auto iter = euler_angles.begin(); iter != euler_angles.end(); ++iter) {
+    double time = iter->first;
+    Eigen::Vector3d euler = iter->second;
+
+    save_euler << time << " "
+                << euler(0) << " "
+                << euler(1) << " "
+                << euler(2) << std::endl;
+  }
 }

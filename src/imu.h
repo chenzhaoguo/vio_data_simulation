@@ -5,6 +5,7 @@
 #include <eigen3/Eigen/Geometry>
 #include <iostream>
 #include <vector>
+#include <map>
 #include "param.h"
 
 struct MotionData {
@@ -35,6 +36,9 @@ class IMU {
   Eigen::Vector3d init_velocity_;
   Eigen::Vector3d init_twb_;
   Eigen::Matrix3d init_Rwb_;
+
+  /// imu orientation by euler_angle
+  std::map<double, Eigen::Vector3d> euler_angles_all_;  // roll/pitch/yaw
 
   MotionData MotionModel(double t);
   void addIMUnoise(MotionData &data);
