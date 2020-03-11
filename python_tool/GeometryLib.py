@@ -50,7 +50,6 @@ def isRotationMatrix(R) :
 # The result is the same as MATLAB except the order
 # of the euler angles ( x and z are swapped ).
 def rotationMatrixToEulerAngles(R) :
- 
     assert(isRotationMatrix(R))
      
     sy = np.sqrt(R[0,0] * R[0,0] +  R[1,0] * R[1,0])     
@@ -70,14 +69,11 @@ def rotationMatrixToEulerAngles(R) :
 def Transfrome(eulerAngles, t, point):
     ''' eulerAngles = np.array([roll, pitch, yaw] ) , t = np.array( [tx, ty, tz]) ,  point = np.array( [px, py, pz])'''
     return euler2Rnb(eulerAngles).dot(point) + t
-    
-    
-    
+
+
 # ############## 3d draw lib  ###################### 
 #            some function used to draw 3d arrows  
 ##############################################
-
-
 # draw 3d arrow
 class Arrow3D(FancyArrowPatch):
     def __init__(self, xs, ys, zs, *args, **kwargs):
@@ -90,29 +86,27 @@ class Arrow3D(FancyArrowPatch):
         self.set_positions((xs[0],ys[0]),(xs[1],ys[1]))
         FancyArrowPatch.draw(self, renderer)
 
-def drawCoordinateFrame( ax, rpy, t):
-        
-    # define origin
+def drawCoordinateFrame(ax, rpy, t):
+    ## define origin
     o = np.array([0,0,0])
-    # define ox0y0z0 axes
+    ## define ox0y0z0 axes
     x0 = np.array([1,0,0])
     y0 = np.array([0,1,0])
     z0 = np.array([0,0,1])
     
     R = euler2Rnb(rpy)
  
-    # transfrom b0 frame to the new bi frame
+    ## transfrom b0 frame to the new bi frame
     o1 = R.dot(o) + t
     x1 = R.dot(x0) + t
     y1 = R.dot(y0) + t
     z1 = R.dot(z0) + t
     
-    x = Arrow3D(   [o1[0], x1[0]],    [o1[1], x1[1]],     [o1[2], x1[2]] ,  mutation_scale=20, arrowstyle='-|>', color='r')
-    y = Arrow3D(   [o1[0], y1[0]],    [o1[1], y1[1]],     [o1[2], y1[2]] ,  mutation_scale=20, arrowstyle='-|>', color='b')
-    z = Arrow3D(   [o1[0], z1[0]],    [o1[1], z1[1]],     [o1[2], z1[2]] ,  mutation_scale=20, arrowstyle='-|>', color='g')
+    x = Arrow3D([o1[0], x1[0]], [o1[1], x1[1]], [o1[2], x1[2]], mutation_scale=20, arrowstyle='-', color='r')
+    y = Arrow3D([o1[0], y1[0]], [o1[1], y1[1]], [o1[2], y1[2]], mutation_scale=20, arrowstyle='-', color='g')
+    z = Arrow3D([o1[0], z1[0]], [o1[1], z1[1]], [o1[2], z1[2]], mutation_scale=20, arrowstyle='-', color='b')
 
-   # draw
-    ax.add_artist( x)    
-    ax.add_artist( y )
-    ax.add_artist( z )
-
+    ## draw
+    ax.add_artist(x)    
+    ax.add_artist(y)
+    ax.add_artist(z)

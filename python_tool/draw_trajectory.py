@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
 np.set_printoptions(suppress = True)
-filepath = os.path.abspath('..')+"/bin"
+filepath = os.path.abspath('..') + "/bin"
 
 tx_index = 5
 
@@ -20,10 +20,10 @@ tx_index = 5
 ## body frame运动时位姿的真值
 position = []
 position = np.loadtxt(filepath + '/imu_pose.txt', usecols = (tx_index, tx_index+1, tx_index+2))
-## 无噪声的IMU数据积分得到的body frame的位姿
+## 无噪声的IMU数据积分得到的body frame的位置
 position1 = []
 position1 = np.loadtxt(filepath + '/imu_int_pose.txt', usecols = (tx_index, tx_index+1, tx_index+2))
-## 有噪声的IMU数据积分得到的body frame的位姿
+## 有噪声的IMU数据积分得到的body frame的位置
 position2 = []
 position2 = np.loadtxt(filepath + '/imu_int_pose_noise.txt', usecols = (tx_index, tx_index+1, tx_index+2))
 ## position error
@@ -42,7 +42,7 @@ ax.legend(loc='upper right', fontsize=9, edgecolor='black')
 ax.set_xlabel('X')
 ax.set_ylabel('Y')
 ax.set_zlabel('Z')
-# 画position误差图
+## 画position误差图
 fig = plt.figure(2)
 x = np.linspace(0.005, 20, 4000)
 plt.plot(x, diff_position_no_noise[:, 0], linewidth=1.0, color="red", label='X')
@@ -53,7 +53,7 @@ plt.ylabel('Position error [m]')
 plt.legend(loc='upper right', fontsize=12, edgecolor='black')
 plt.grid(linestyle="--")
 
-# ## 有噪声IMU数据积分解算的轨迹与真值比较
+## 有噪声IMU数据积分解算的轨迹与真值比较
 fig = plt.figure(3)
 ax = fig.gca(projection='3d')
 ax.plot(position[:, 0], position[:, 1], position[:, 2], linewidth=1.0, color="black", label='groundtruth')

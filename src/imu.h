@@ -22,7 +22,7 @@ struct MotionData {
   Eigen::Vector3d imu_velocity;
 };
 
-// euler2Rotation: body frame to interitail frame
+/// euler2Rotation: body frame to interitail frame
 Eigen::Matrix3d euler2Rotation(Eigen::Vector3d eulerAngles);
 Eigen::Matrix3d eulerRates2bodyRates(Eigen::Vector3d eulerAngles);
 
@@ -42,7 +42,7 @@ class IMU {
 
   MotionData MotionModel(double t);
   void addIMUnoise(MotionData &data);
-  void testImu(std::string src, std::string dest);  // imu数据进行积分，用来看imu轨迹
+  void TestImu(std::string src, std::string dest);  // imu数据进行积分，用来看imu轨迹
 };
 
 #endif  // IMUSIMWITHPOINTLINE_IMU_H

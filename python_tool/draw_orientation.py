@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
 np.set_printoptions(suppress = True)
-filepath = os.path.abspath('..')+"/bin"
+filepath = os.path.abspath('..') + "/bin"
 
 tx_index = 1
 

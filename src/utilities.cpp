@@ -23,7 +23,7 @@ Eigen::Vector3d Quaterniond2EulerAngle(const Eigen::Quaterniond &q) {
   return euler;
 }
 
-void save_points(std::string filename, 
+void SavePoints(std::string filename, 
                  std::vector<Eigen::Vector4d, Eigen::aligned_allocator<Eigen::Vector4d> > points) {
   std::ofstream save_points;
   save_points.open(filename.c_str());
@@ -37,9 +37,9 @@ void save_points(std::string filename,
   }
 }
 
-void save_features(std::string filename,
-                   std::vector<Eigen::Vector4d, Eigen::aligned_allocator<Eigen::Vector4d> > points,
-                   std::vector<Eigen::Vector2d, Eigen::aligned_allocator<Eigen::Vector2d> > features) {
+void SaveFeatures(std::string filename,
+                  std::vector<Eigen::Vector4d, Eigen::aligned_allocator<Eigen::Vector4d> > points,
+                  std::vector<Eigen::Vector2d, Eigen::aligned_allocator<Eigen::Vector2d> > features) {
   std::ofstream save_points;
   save_points.open(filename.c_str());
 
@@ -55,8 +55,8 @@ void save_features(std::string filename,
   }
 }
 
-void save_lines(std::string filename,
-                std::vector<Eigen::Vector4d, Eigen::aligned_allocator<Eigen::Vector4d> > features) {
+void SaveLines(std::string filename,
+               std::vector<Eigen::Vector4d, Eigen::aligned_allocator<Eigen::Vector4d> > features) {
   std::ofstream save_points;
   save_points.open(filename.c_str());
 
@@ -117,7 +117,7 @@ void LoadPose(std::string filename, std::vector<MotionData> &pose) {
   }
 }
 
-void save_Pose(std::string filename, std::vector<MotionData> pose) {
+void SaveDataImu(std::string filename, std::vector<MotionData> pose) {
   std::ofstream save_points;
   save_points.open(filename.c_str());
 
@@ -150,7 +150,32 @@ void save_Pose(std::string filename, std::vector<MotionData> pose) {
   }
 }
 
-void save_Pose_asTUM(std::string filename, std::vector<MotionData> pose) {
+void SaveDataCamera(std::string filename, std::vector<MotionData> pose) {
+  std::ofstream save_points;
+  save_points.open(filename.c_str());
+
+  for (int i = 0; i < pose.size(); ++i) {
+    MotionData data = pose[i];
+    double time = data.timestamp;
+    Eigen::Quaterniond q(data.Rwb);
+    Eigen::Vector3d euler = Quaterniond2EulerAngle(q);  // output: roll/pitch/yaw
+    Eigen::Vector3d t = data.twb;
+
+    save_points << time << " "
+                << q.w() << " "
+                << q.x() << " "
+                << q.y() << " "
+                << q.z() << " "
+                << t(0) << " "
+                << t(1) << " "
+                << t(2) << " "
+                << euler(0) << " "
+                << euler(1) << " "
+                << euler(2) << std::endl;
+  }
+}
+
+void SaveDataCameraAsTUM(std::string filename, std::vector<MotionData> pose) {
   std::ofstream save_points;
   save_points.setf(std::ios::fixed, std::ios::floatfield);
   save_points.open(filename.c_str());
@@ -160,8 +185,6 @@ void save_Pose_asTUM(std::string filename, std::vector<MotionData> pose) {
     double time = data.timestamp;
     Eigen::Quaterniond q(data.Rwb);
     Eigen::Vector3d t = data.twb;
-    Eigen::Vector3d gyro = data.imu_gyro;
-    Eigen::Vector3d acc = data.imu_acc;
 
     save_points.precision(9);
     save_points << time << " ";
@@ -173,10 +196,10 @@ void save_Pose_asTUM(std::string filename, std::vector<MotionData> pose) {
                 << q.y() << " "
                 << q.z() << " "
                 << q.w() << std::endl;
-    }
+  }
 }
 
-void save_euler_angle(std::string filename, std::map<double, Eigen::Vector3d> &euler_angles) {
+void SaveEulerAngle(std::string filename, std::map<double, Eigen::Vector3d> &euler_angles) {
   std::ofstream save_euler;
   save_euler.open(filename.c_str());
 

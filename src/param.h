@@ -7,7 +7,7 @@ class Param {
  public:
   Param();
 
-  // time
+  /// time
   int imu_frequency = 200;
   int cam_frequency = 30;
   double imu_timestep = 1.0/imu_frequency;
@@ -15,7 +15,7 @@ class Param {
   double t_start = 0.0;
   double t_end = 20.0;  // 20s
 
-  // noise
+  /// noise
   double gyro_bias_sigma = 1.0e-5;  // 连续时间下gyro bias随机游走噪声标准差
   double acc_bias_sigma = 0.0001;  // 连续时间下acc bias随机游走噪声标准差
   double gyro_noise_sigma = 0.015;  // 连续时间下gyro高斯白噪声标准差  rad/s*1/sqrt(Hz)
@@ -23,7 +23,7 @@ class Param {
 
   double pixel_noise = 1;  // 1 pixel noise
 
-  // camera f
+  /// camera参数
   double fx = 460;
   double fy = 460;
   double cx = 255;
@@ -31,7 +31,7 @@ class Param {
   double image_w = 640;
   double image_h = 640;
 
-  // 外参数: camera frame to body frame
+  /// 外参数: camera frame to body frame
   Eigen::Matrix3d R_bc; 
   Eigen::Vector3d t_bc;
 };
