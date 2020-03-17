@@ -118,8 +118,8 @@ void LoadPose(std::string filename, std::vector<MotionData> &pose) {
 }
 
 void SaveDataImu(std::string filename, std::vector<MotionData> pose) {
-  std::ofstream save_points;
-  save_points.open(filename.c_str());
+  std::ofstream save_data;
+  save_data.open(filename.c_str());
 
   for (int i = 0; i < pose.size(); ++i) {
     MotionData data = pose[i];
@@ -130,7 +130,7 @@ void SaveDataImu(std::string filename, std::vector<MotionData> pose) {
     Eigen::Vector3d gyro = data.imu_gyro;
     Eigen::Vector3d acc = data.imu_acc;
 
-    save_points << time << " "
+    save_data << time << " "
                 << q.w() << " "
                 << q.x() << " "
                 << q.y() << " "
@@ -147,6 +147,50 @@ void SaveDataImu(std::string filename, std::vector<MotionData> pose) {
                 << euler(0) << " "
                 << euler(1) << " "
                 << euler(2) << std::endl;
+  }
+}
+
+void SaveGroundtruthAsTUM(std::string filename, std::vector<MotionData> pose) {
+  std::ofstream save_imu;
+  save_imu.setf(std::ios::fixed, std::ios::floatfield);
+  save_imu.open(filename.c_str());
+
+  for (int i = 0; i < pose.size(); ++i) {
+    MotionData data = pose[i];
+    double time = data.timestamp;
+    Eigen::Quaterniond q(data.Rwb);
+    Eigen::Vector3d t = data.twb;
+
+    save_imu.precision(9);
+    save_imu << time << " ";
+    save_imu.precision(5);
+    save_imu << t(0) << " "
+             << t(1) << " "
+             << t(2) << " "
+             << q.x() << " "
+             << q.y() << " "
+             << q.z() << " "
+             << q.w() << std::endl;
+  }
+}
+
+void SaveImuOutput(std::string filename, std::vector<MotionData> pose) {
+  std::ofstream save_imu;
+  save_imu.open(filename.c_str());
+
+  for (int i = 0; i < pose.size(); ++i) {
+    MotionData data = pose[i];
+    double time = data.timestamp;
+    Eigen::Vector3d gyro = data.imu_gyro;
+    Eigen::Vector3d acc = data.imu_acc;
+
+    save_imu << time << " "
+             << gyro(0) << " "
+             << gyro(1) << " "
+             << gyro(2) << " "
+             << acc(0) << " "
+             << acc(1) << " "
+             << acc(2) << std::endl;
   }
 }
 

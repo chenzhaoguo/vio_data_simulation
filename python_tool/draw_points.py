@@ -73,7 +73,7 @@ for i in range(0,600,5):
         drawCoordinateFrame(ax, rpy[j], t[j])
     
     ## 绘制当前相机能看到的所有特征点与当前相机位姿坐标系原点的连线
-    s = filepath + '/keyframe/all_points_' + str(i) + '.txt'
+    s = filepath + '/keyframe/landmarks_' + str(i) + '.txt'
     p = position[i]
     with open(s, 'r') as f:
         data = f.readlines()

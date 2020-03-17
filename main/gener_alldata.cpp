@@ -117,7 +117,9 @@ int main() {
   imuGen.init_twb_ = imudata[0].twb;
   imuGen.init_Rwb_ = imudata[0].Rwb;
   SaveDataImu("imu_pose.txt", imudata);
+  SaveGroundtruthAsTUM("groundtruth_tum.txt", imudata);  // save groundtruth for vio test
   SaveDataImu("imu_pose_noise.txt", imudata_noise);
+  SaveImuOutput("imu_output.txt", imudata_noise);  // save imu output for vio test
   SaveEulerAngle("imu_euler_gt.txt", imuGen.euler_angles_all_);
 
   /// test the imu data, integrate the imu data to generate the imu trajecotry
@@ -138,7 +140,7 @@ int main() {
     t += 1.0/params.cam_frequency;
   }
   SaveDataCamera("cam_pose.txt", camdata);
-  SaveDataCameraAsTUM("cam_pose_tum.txt", camdata);
+  SaveDataCameraAsTUM("camera_pose_tum.txt", camdata);  // for vio test
 
   /// points observe in image
   for (int n = 0; n < camdata.size(); ++n) {
@@ -168,7 +170,7 @@ int main() {
 
     /// save points
     std::stringstream filename1;
-    filename1 << "keyframe/all_points_" << n << ".txt";
+    filename1 << "keyframe/landmarks_" << n << ".txt";    // for vio test
     SaveFeatures(filename1.str(), points_cam, features_cam);
   }
 

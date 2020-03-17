@@ -20,7 +20,7 @@ position = np.loadtxt(filepath + '/imu_pose.txt', usecols = (tx_index, tx_index+
 ## 轨迹真值
 fig = plt.figure(1)
 ax = fig.gca(projection='3d')
-ax.plot(position[:, 0], position[:, 1], position[:, 2], linewidth=1.0, color="black", label='groundtruth')
+ax.plot(position[:, 0], position[:, 1], position[:, 2], linewidth=1.0, color="black", label='trajectory_groundtruth')
 ax.plot([position[0, 0]], [position[0, 1]], [position[0, 2]], 'o', markersize=3, color="red", label='start point')
 ax.legend(loc='upper right', fontsize=9, edgecolor='black')
 ax.set_xlabel('X')

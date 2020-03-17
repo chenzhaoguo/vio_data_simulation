@@ -28,6 +28,12 @@ void LoadPose(std::string filename, std::vector<MotionData> &pose);
 /// save imu data
 void SaveDataImu(std::string filename, std::vector<MotionData> pose);
 
+/// save imu data as TUM style, for vio test
+void SaveGroundtruthAsTUM(std::string filename, std::vector<MotionData> pose);
+
+/// save imu output for vio test
+void SaveImuOutput(std::string filename, std::vector<MotionData> pose);
+
 /// save camera data
 void SaveDataCamera(std::string filename, std::vector<MotionData> pose);
 
