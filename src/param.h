@@ -16,10 +16,10 @@ class Param {
   double t_end = 20.0;  // 20s
 
   /// noise
-  double gyro_bias_sigma = 1.0e-6;  // 连续时间下gyro bias随机游走噪声标准差
-  double acc_bias_sigma = 0.0001;  // 连续时间下acc bias随机游走噪声标准差
-  double gyro_noise_sigma = 0.0;  // 连续时间下gyro高斯白噪声标准差  rad/s*1/sqrt(Hz)
-  double acc_noise_sigma = 0.0;   // 连续时间下acc高斯白噪声标准差  m/(s^2)*1/sqrt(Hz)
+  double acc_noise_sigma = 5.0e-2;   // 连续时间下acc高斯白噪声标准差  m/(s^2)*1/sqrt(Hz)
+  double gyro_noise_sigma = 6.0e-3;  // 连续时间下gyro高斯白噪声标准差  rad/s*1/sqrt(Hz)
+  double acc_bias_sigma = 2.0e-2;  // 连续时间下acc bias随机游走噪声标准差  m/(s^2)
+  double gyro_bias_sigma = 3.0e-3;  // 连续时间下gyro bias随机游走噪声标准差  rad/s
 
   double pixel_noise = 1;  // 1 pixel noise
 

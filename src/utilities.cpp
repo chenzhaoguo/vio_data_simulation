@@ -257,3 +257,18 @@ void SaveEulerAngle(std::string filename, std::map<double, Eigen::Vector3d> &eul
                 << euler(2) << std::endl;
   }
 }
+
+void SaveImuBias(std::string filename, std::map<double, Eigen::Vector3d> &imu_bias) {
+  std::ofstream save_imu_bias;
+  save_imu_bias.open(filename.c_str());
+
+  for (auto iter = imu_bias.begin(); iter != imu_bias.end(); ++iter) {
+    double time = iter->first;
+    Eigen::Vector3d imu_bias = iter->second;
+
+    save_imu_bias << time << " "
+                  << imu_bias(0) << " "
+                  << imu_bias(1) << " "
+                  << imu_bias(2) << std::endl;
+  }
+}

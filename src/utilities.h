@@ -43,4 +43,7 @@ void SaveDataCameraAsTUM(std::string filename, std::vector<MotionData> pose);
 /// save euler_angle
 void SaveEulerAngle(std::string filename, std::map<double, Eigen::Vector3d> &euler_angles);
 
+/// save imu bias
+void SaveImuBias(std::string filename, std::map<double, Eigen::Vector3d> &imu_bias);
+
 #endif  // IMUSIMWITHPOINTLINE_UTILITIES_H

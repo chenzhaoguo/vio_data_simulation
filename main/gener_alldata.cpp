@@ -121,6 +121,8 @@ int main() {
   SaveDataImu("imu_pose_noise.txt", imudata_noise);
   SaveImuOutput("imu_output.txt", imudata_noise);  // save imu output for vio test
   SaveEulerAngle("imu_euler_gt.txt", imuGen.euler_angles_all_);
+  SaveImuBias("acc_bias.txt", imuGen.acc_bias_all_);
+  SaveImuBias("gyro_bias.txt", imuGen.gyro_bias_all_);
 
   /// test the imu data, integrate the imu data to generate the imu trajecotry
   imuGen.TestImu("imu_pose.txt", "imu_int_pose.txt");

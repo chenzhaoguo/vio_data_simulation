@@ -40,6 +40,10 @@ class IMU {
   /// imu orientation by euler_angle
   std::map<double, Eigen::Vector3d> euler_angles_all_;  // roll/pitch/yaw
 
+  /// save all imu bias
+  std::map<double, Eigen::Vector3d> acc_bias_all_;
+  std::map<double, Eigen::Vector3d> gyro_bias_all_;
+
   MotionData MotionModel(double t);
   void addIMUnoise(MotionData &data);
   void TestImu(std::string src, std::string dest);  // imu数据进行积分，用来看imu轨迹
