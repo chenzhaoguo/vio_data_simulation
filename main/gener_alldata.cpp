@@ -10,7 +10,7 @@ using Lines = std::vector<Line, Eigen::aligned_allocator<Line> >;
 
 void CreatePointsLines(Points &points, Lines &lines) {
   std::ifstream f;
-  f.open("house_model/house.txt");
+  f.open("../landmarks_data/house_model/house.txt");
 
   while (!f.eof()) {
     std::string s;

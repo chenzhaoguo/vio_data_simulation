@@ -9,13 +9,13 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
 np.set_printoptions(suppress = True)
-filepath = os.path.abspath('..') + "/bin"
+filepath = os.path.abspath('..') + "/bin/"
 
 tx_index = 1
 
 ## euler groundtruth
 euler_gt = []
-euler_gt = np.loadtxt(filepath + '/imu_euler_gt.txt', usecols = (tx_index, tx_index+1, tx_index+2))
+euler_gt = np.loadtxt(filepath + 'imu_euler_gt.txt', usecols = (tx_index, tx_index+1, tx_index+2))
 ## 画图
 # fig = plt.figure(1)
 # x = np.linspace(0.0, 20.0, 4001)
@@ -29,7 +29,7 @@ euler_gt = np.loadtxt(filepath + '/imu_euler_gt.txt', usecols = (tx_index, tx_in
 
 ## euler gt --> matrix --> q --> euler
 euler_transfer = []
-euler_transfer = np.loadtxt(filepath + '/imu_pose.txt', usecols = (tx_index+13, tx_index+14, tx_index+15))
+euler_transfer = np.loadtxt(filepath + 'imu_pose.txt', usecols = (tx_index+13, tx_index+14, tx_index+15))
 ## 画图
 # fig = plt.figure(2)
 # x = np.linspace(0.0, 20.0, 4001)
@@ -43,7 +43,7 @@ euler_transfer = np.loadtxt(filepath + '/imu_pose.txt', usecols = (tx_index+13, 
 
 ## imu data integration: no noise
 euler_int_no_noise = []
-euler_int_no_noise = np.loadtxt(filepath + '/imu_int_pose.txt', usecols = (tx_index+14, tx_index+15, tx_index+16))
+euler_int_no_noise = np.loadtxt(filepath + 'imu_int_pose.txt', usecols = (tx_index+14, tx_index+15, tx_index+16))
 ## 画图
 # fig = plt.figure(3)
 # x = np.linspace(0.05, 20.0, 4000)
@@ -57,7 +57,7 @@ euler_int_no_noise = np.loadtxt(filepath + '/imu_int_pose.txt', usecols = (tx_in
 
 ## imu data integration: noise
 euler_int_noise = []
-euler_int_noise = np.loadtxt(filepath + '/imu_int_pose_noise.txt', usecols = (tx_index+14, tx_index+15, tx_index+16))
+euler_int_noise = np.loadtxt(filepath + 'imu_int_pose_noise.txt', usecols = (tx_index+14, tx_index+15, tx_index+16))
 ## 画图
 # fig = plt.figure(4)
 # x = np.linspace(0.05, 20.0, 4000)

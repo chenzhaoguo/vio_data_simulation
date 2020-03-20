@@ -2,9 +2,8 @@
 # -*- coding: utf-8 -*-
 """
 Created on Thu Jun 15 18:18:24 2017
-
-@author: hyj
 """
+
 import os
 import numpy as np
 import matplotlib
@@ -12,20 +11,20 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
 np.set_printoptions(suppress = True)
-filepath = os.path.abspath('..') + "/bin"
+filepath = os.path.abspath('..') + "/bin/"
 
 tx_index = 5
 
 ## 数据准备
 ## body frame运动时位姿的真值
 position = []
-position = np.loadtxt(filepath + '/imu_pose.txt', usecols = (tx_index, tx_index+1, tx_index+2))
+position = np.loadtxt(filepath + 'imu_pose.txt', usecols = (tx_index, tx_index+1, tx_index+2))
 ## 无噪声的IMU数据积分得到的body frame的位置
 position1 = []
-position1 = np.loadtxt(filepath + '/imu_int_pose.txt', usecols = (tx_index, tx_index+1, tx_index+2))
+position1 = np.loadtxt(filepath + 'imu_int_pose.txt', usecols = (tx_index, tx_index+1, tx_index+2))
 ## 有噪声的IMU数据积分得到的body frame的位置
 position2 = []
-position2 = np.loadtxt(filepath + '/imu_int_pose_noise.txt', usecols = (tx_index, tx_index+1, tx_index+2))
+position2 = np.loadtxt(filepath + 'imu_int_pose_noise.txt', usecols = (tx_index, tx_index+1, tx_index+2))
 ## position error
 position_gt = position[1:4001]
 diff_position_no_noise = np.array(position1) - np.array(position_gt)

@@ -5,11 +5,13 @@ if [ ! -d "build" ]; then
   mkdir build
 fi
 
-cd ./bin
-rm -rf keyframe
-rm -rf *.txt
+if [ -d "bin" ]; then
+  cd bin
+  rm -rf *
+  cd ..
+fi
 
-cd ../build
+cd build
 rm -rf *
 cmake .. -DCMAKE_BUILD_TYPE=Release
 make -j4

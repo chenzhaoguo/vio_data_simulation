@@ -8,14 +8,14 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
 np.set_printoptions(suppress = True)
-filepath = os.path.abspath('..') + "/bin"
+filepath = os.path.abspath('..') + "/bin/"
 
 tx_index = 5
 
 ## 数据准备
 ## body frame运动时位姿的真值
 position = []
-position = np.loadtxt(filepath + '/imu_pose.txt', usecols = (tx_index, tx_index+1, tx_index+2))
+position = np.loadtxt(filepath + 'imu_pose.txt', usecols = (tx_index, tx_index+1, tx_index+2))
 
 ## 轨迹真值
 fig = plt.figure(1)
@@ -31,7 +31,7 @@ ax.set_zlabel('Z')
 x=[]
 y=[]
 z=[]
-with open(filepath + '/all_points.txt', 'r') as f:
+with open(filepath + 'all_points.txt', 'r') as f:
     data = f.readlines()  # txt中所有字符串读入data
     for line in data:
         odom = line.split()  # 将单个数据分隔开存好
@@ -43,7 +43,7 @@ with open(filepath + '/all_points.txt', 'r') as f:
 ax.scatter(x, y, z, color='green')
 
 ## 将所有特征点中的其中18个特征点连线，形成house的形状
-s = filepath + '/house_model/house.txt'
+s = filepath + '../landmarks_data/house_model/house.txt'
 with open(s, 'r') as f:
     data = f.readlines()
     for line in data:

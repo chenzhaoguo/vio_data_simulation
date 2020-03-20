@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 """
 Created on Thu Jun 15 18:18:24 2017
-
-@author: hyj
 """
 
 import os
@@ -13,13 +11,13 @@ from mpl_toolkits.mplot3d import Axes3D
 from GeometryLib import drawCoordinateFrame, euler2Rbn, euler2Rnb
 import transformations as tf
 
-filepath=os.path.abspath('..') + "/bin"
+filepath=os.path.abspath('..') + "/bin/"
 
 ## read data from all_points.txt
 x=[]
 y=[]
 z=[]
-with open(filepath + '/all_points.txt', 'r') as f:
+with open(filepath + 'all_points.txt', 'r') as f:
     data = f.readlines()  # txt中所有字符串读入data
     for line in data:
         odom = line.split()  # 将单个数据分隔开存好
@@ -33,7 +31,7 @@ position = []
 quaterntions = []
 timestamp = []
 qw_index = 1
-with open(filepath + '/cam_pose.txt', 'r') as f:
+with open(filepath + 'cam_pose.txt', 'r') as f:
     data = f.readlines()
     for line in data:
         odom = line.split()
@@ -55,7 +53,7 @@ for i in range(0,600,5):
     ax.scatter(x, y, z, color='green')
     
     ## 将所有特征点中的其中18个特征点连线，形成house的形状
-    s = filepath + '/house_model/house.txt'
+    s = filepath + '../landmarks_data/house_model/house.txt'
     with open(s, 'r') as f:
         data = f.readlines()
         for line in data:
@@ -73,7 +71,7 @@ for i in range(0,600,5):
         drawCoordinateFrame(ax, rpy[j], t[j])
     
     ## 绘制当前相机能看到的所有特征点与当前相机位姿坐标系原点的连线
-    s = filepath + '/keyframe/landmarks_' + str(i) + '.txt'
+    s = filepath + 'keyframe/landmarks_' + str(i) + '.txt'
     p = position[i]
     with open(s, 'r') as f:
         data = f.readlines()

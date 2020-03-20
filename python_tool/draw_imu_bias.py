@@ -8,17 +8,17 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
 np.set_printoptions(suppress = True)
-filepath = os.path.abspath('..') + "/bin"
+filepath = os.path.abspath('..') + "/bin/"
 
 col_index = 0
 
 acc_bias = []
-acc_x = np.loadtxt(filepath + '/acc_bias.txt', usecols = (col_index))
-acc_bias = np.loadtxt(filepath + '/acc_bias.txt', usecols = (col_index+1, col_index+2, col_index+3))
+acc_x = np.loadtxt(filepath + 'acc_bias.txt', usecols = (col_index))
+acc_bias = np.loadtxt(filepath + 'acc_bias.txt', usecols = (col_index+1, col_index+2, col_index+3))
 
 gyro_bias = []
-gyro_x = np.loadtxt(filepath + '/gyro_bias.txt', usecols = (col_index))
-gyro_bias = np.loadtxt(filepath + '/gyro_bias.txt', usecols = (col_index+1, col_index+2, col_index+3))
+gyro_x = np.loadtxt(filepath + 'gyro_bias.txt', usecols = (col_index))
+gyro_bias = np.loadtxt(filepath + 'gyro_bias.txt', usecols = (col_index+1, col_index+2, col_index+3))
 
 ## 画图
 ## acc bias
