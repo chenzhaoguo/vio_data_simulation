@@ -24,7 +24,7 @@ Eigen::Vector3d Quaterniond2EulerAngle(const Eigen::Quaterniond &q) {
 }
 
 void SavePoints(std::string filename, 
-                 std::vector<Eigen::Vector4d, Eigen::aligned_allocator<Eigen::Vector4d> > points) {
+                std::vector<Eigen::Vector4d, Eigen::aligned_allocator<Eigen::Vector4d> > points) {
   std::ofstream save_points;
   save_points.open(filename.c_str());
 
@@ -72,7 +72,6 @@ void SaveLines(std::string filename,
 void LoadPose(std::string filename, std::vector<MotionData> &pose) {
   std::ifstream f;
   f.open(filename.c_str());
-
   if (!f.is_open()) {
     std::cerr << " can't open LoadFeatures file " << std::endl;
     return;
@@ -81,11 +80,9 @@ void LoadPose(std::string filename, std::vector<MotionData> &pose) {
   while (!f.eof()) {
     std::string s;
     std::getline(f, s);
-
     if (!s.empty()) {
       std::stringstream ss;
       ss << s;
-
       double time;
       Eigen::Quaterniond q;
       Eigen::Vector3d t;
@@ -117,12 +114,12 @@ void LoadPose(std::string filename, std::vector<MotionData> &pose) {
   }
 }
 
-void SaveDataImu(std::string filename, std::vector<MotionData> pose) {
+void SaveDataImu(std::string filename, std::vector<MotionData> motion_data) {
   std::ofstream save_data;
   save_data.open(filename.c_str());
 
-  for (int i = 0; i < pose.size(); ++i) {
-    MotionData data = pose[i];
+  for (int i = 0; i < motion_data.size(); ++i) {
+    MotionData data = motion_data[i];
     double time = data.timestamp;
     Eigen::Quaterniond q(data.Rwb);
     Eigen::Vector3d euler = Quaterniond2EulerAngle(q);  // output: roll/pitch/yaw
@@ -150,13 +147,13 @@ void SaveDataImu(std::string filename, std::vector<MotionData> pose) {
   }
 }
 
-void SaveGroundtruthAsTUM(std::string filename, std::vector<MotionData> pose) {
+void SaveGroundtruthAsTUM(std::string filename, std::vector<MotionData> motion_data) {
   std::ofstream save_imu;
   save_imu.setf(std::ios::fixed, std::ios::floatfield);
   save_imu.open(filename.c_str());
 
-  for (int i = 0; i < pose.size(); ++i) {
-    MotionData data = pose[i];
+  for (int i = 0; i < motion_data.size(); ++i) {
+    MotionData data = motion_data[i];
     double time = data.timestamp;
     Eigen::Quaterniond q(data.Rwb);
     Eigen::Vector3d t = data.twb;
@@ -174,12 +171,12 @@ void SaveGroundtruthAsTUM(std::string filename, std::vector<MotionData> pose) {
   }
 }
 
-void SaveImuOutput(std::string filename, std::vector<MotionData> pose) {
+void SaveImuOutput(std::string filename, std::vector<MotionData> motion_data) {
   std::ofstream save_imu;
   save_imu.open(filename.c_str());
 
-  for (int i = 0; i < pose.size(); ++i) {
-    MotionData data = pose[i];
+  for (int i = 0; i < motion_data.size(); ++i) {
+    MotionData data = motion_data[i];
     double time = data.timestamp;
     Eigen::Vector3d gyro = data.imu_gyro;
     Eigen::Vector3d acc = data.imu_acc;
@@ -194,18 +191,18 @@ void SaveImuOutput(std::string filename, std::vector<MotionData> pose) {
   }
 }
 
-void SaveDataCamera(std::string filename, std::vector<MotionData> pose) {
-  std::ofstream save_points;
-  save_points.open(filename.c_str());
+void SaveDataCamera(std::string filename, std::vector<MotionData> motion_data) {
+  std::ofstream save_data;
+  save_data.open(filename.c_str());
 
-  for (int i = 0; i < pose.size(); ++i) {
-    MotionData data = pose[i];
+  for (int i = 0; i < motion_data.size(); ++i) {
+    MotionData data = motion_data[i];
     double time = data.timestamp;
     Eigen::Quaterniond q(data.Rwb);
     Eigen::Vector3d euler = Quaterniond2EulerAngle(q);  // output: roll/pitch/yaw
     Eigen::Vector3d t = data.twb;
 
-    save_points << time << " "
+    save_data << time << " "
                 << q.w() << " "
                 << q.x() << " "
                 << q.y() << " "

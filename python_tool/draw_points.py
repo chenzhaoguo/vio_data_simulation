@@ -36,7 +36,6 @@ with open(filepath + 'cam_pose.txt', 'r') as f:
     for line in data:
         odom = line.split()
         numbers_float = map(float, odom)
-        #timestamp.append(numbers_float[0])
         quaterntions.append([numbers_float[qw_index], numbers_float[qw_index+1], numbers_float[qw_index+2], numbers_float[qw_index+3]])  # qw,qx,qy,qz
         position.append([numbers_float[qw_index+4], numbers_float[qw_index+5], numbers_float[qw_index+6]])
 
@@ -50,7 +49,7 @@ t = []
 for i in range(0,600,5):
     ax.clear()
     ## 绘制all_points.txt中所有特征点
-    ax.scatter(x, y, z, color='green')
+    ax.scatter(x, y, z, color='g')
     
     ## 将所有特征点中的其中18个特征点连线，形成house的形状
     s = filepath + '../landmarks_data/house_model/house.txt'
@@ -59,7 +58,7 @@ for i in range(0,600,5):
         for line in data:
             odom = line.split()
             numbers_float = map(float, odom)
-            ax.plot([numbers_float[0], numbers_float[3]], [numbers_float[1], numbers_float[4]], color='blue', zs=[numbers_float[2], numbers_float[5]])
+            ax.plot([numbers_float[0], numbers_float[3]], [numbers_float[1], numbers_float[4]], color='b', zs=[numbers_float[2], numbers_float[5]])
 
     ## 绘制所有时刻相机的位姿，每个位姿用3维坐标系表示
     x1=[]
@@ -83,13 +82,13 @@ for i in range(0,600,5):
             z1.append(numbers_float[2])
             ax.plot([numbers_float[0], p[0]], [numbers_float[1], p[1]], zs=[numbers_float[2], p[2]])
     
-    ax.scatter(x1, y1, z1, color='red', marker='^')
+    ax.scatter(x1, y1, z1, color='r', marker='^')
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')
-    # ax.set_xlim(-15, 20)
-    # ax.set_ylim(-15, 20)
-    # ax.set_zlim(0, 20)
+    ax.set_xlim(-10, 20)
+    ax.set_ylim(-10, 20)
+    ax.set_zlim(0, 20)
     ax.legend()
     plt.show()
     plt.pause(0.01)

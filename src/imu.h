@@ -29,6 +29,12 @@ Eigen::Matrix3d eulerRates2bodyRates(Eigen::Vector3d eulerAngles);
 class IMU {
  public:
   IMU(Param p);
+
+  MotionData MotionModel(double t);
+  void addIMUnoise(MotionData &data);
+  
+  void TestImu(std::string src, std::string dest);  // imu数据进行积分，用来看imu轨迹
+
   Param param_;
   Eigen::Vector3d gyro_bias_;
   Eigen::Vector3d acc_bias_;
@@ -43,10 +49,6 @@ class IMU {
   /// save all imu bias
   std::map<double, Eigen::Vector3d> acc_bias_all_;
   std::map<double, Eigen::Vector3d> gyro_bias_all_;
-
-  MotionData MotionModel(double t);
-  void addIMUnoise(MotionData &data);
-  void TestImu(std::string src, std::string dest);  // imu数据进行积分，用来看imu轨迹
 };
 
 #endif  // IMUSIMWITHPOINTLINE_IMU_H

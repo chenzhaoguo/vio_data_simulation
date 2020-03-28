@@ -114,8 +114,8 @@ void IMU::TestImu(std::string src, std::string dest) {
   std::vector<MotionData> imu_data;
   LoadPose(src, imu_data);
 
-  std::ofstream save_points;
-  save_points.open(dest);
+  std::ofstream save_result;
+  save_result.open(dest);
 
   double dt = param_.imu_timestep;
   Eigen::Vector3d Pwb = imu_data[0].twb;  // position: from imu measurements
@@ -174,14 +174,7 @@ void IMU::TestImu(std::string src, std::string dest) {
     Eigen::Vector3d euler = Quaterniond2EulerAngle(Qwb);  // output: roll/pitch/yaw
 
     ///　按着imu quaternion, imu postion, cam quaternion, cam postion的格式存储，由于没有cam，所以imu存了两次
-    save_points << imu_pose_curr.timestamp << " "
-                << Qwb.w() << " "
-                << Qwb.x() << " "
-                << Qwb.y() << " "
-                << Qwb.z() << " "
-                << Pwb(0) << " "
-                << Pwb(1) << " "
-                << Pwb(2) << " "
+    save_result << imu_pose_curr.timestamp << " "
                 << Qwb.w() << " "
                 << Qwb.x() << " "
                 << Qwb.y() << " "
