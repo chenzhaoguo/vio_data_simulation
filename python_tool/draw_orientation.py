@@ -54,7 +54,7 @@ ax13.grid(linestyle="--")
 euler_int_no_noise = []
 euler_int_no_noise_x = np.loadtxt(filepath + 'imu_int_pose.txt', usecols=(0))
 euler_int_no_noise = np.loadtxt(filepath + 'imu_int_pose.txt', usecols=(8, 9, 10))
-diff_euler_int_no_noise_rad = np.array(euler_int_no_noise) - np.array(euler_gt[1:4001])
+diff_euler_int_no_noise_rad = np.array(euler_int_no_noise) - np.array(euler_gt[1:18204])
 diff_euler_int_no_noise_deg = diff_euler_int_no_noise_rad * 180 / math.pi
 
 fig2, (ax21, ax22) = plt.subplots(2, 1, figsize=(6, 4))
@@ -91,7 +91,7 @@ insert_ax1.grid(linestyle="--")
 euler_int_noise = []
 euler_int_noise_x = np.loadtxt(filepath + 'imu_int_pose_noise.txt', usecols=(0))
 euler_int_noise = np.loadtxt(filepath + 'imu_int_pose_noise.txt', usecols = (8, 9 ,10))
-diff_euler_int_noise_rad = np.array(euler_int_noise) - np.array(euler_gt[1:4001])
+diff_euler_int_noise_rad = np.array(euler_int_noise) - np.array(euler_gt[1:18204])
 diff_euler_int_noise_deg = diff_euler_int_noise_rad * 180 / math.pi
 
 fig3, (ax31, ax32) = plt.subplots(2, 1, figsize=(6, 4))

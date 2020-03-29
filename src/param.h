@@ -12,8 +12,8 @@ class Param {
   int cam_frequency = 30;
   double imu_timestep = 1.0/imu_frequency;
   double cam_timestep = 1.0/cam_frequency;
-  double t_start = 0.0;
-  double t_end = 20.0;  // 20s
+  double t_start = 0.0;  // s
+  double t_end = 91.0;
 
   /// noise
   double acc_noise_sigma = 2.0e-2;   // 连续时间下acc高斯白噪声标准差  m/(s^2)*1/sqrt(Hz)

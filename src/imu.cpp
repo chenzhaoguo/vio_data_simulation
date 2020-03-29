@@ -34,35 +34,92 @@ IMU::IMU(Param p) : param_(p) {
 }
 
 MotionData IMU::MotionModel(double t) {
-  /// param of motion
-  float ellipse_x = 15;
-  float ellipse_y = 20;
-  float z = 1;          // z轴做sin运动
-  float K1 = 10;        // z轴的正弦频率是x，y的k1倍
-  float K = M_PI / 10;  // 20*K = 2pi，由于我们采取的时间是20s, 系数K控制yaw正好旋转一圈，运动一周
-
   /// translation
-  Eigen::Vector3d position(ellipse_x*cos(K*t)+5, ellipse_y*sin(K*t)+5, z*sin(K1*K*t)+5);  // position twb: body frame in world frame
-  Eigen::Vector3d dp(-K*ellipse_x*sin(K*t), K*ellipse_y*cos(K*t), z*K1*K*cos(K1*K*t));  // position一阶导数vw: W系下的速度
-  double K2 = K*K;
-  Eigen::Vector3d ddp(-K2*ellipse_x*cos(K*t), -K2*ellipse_y*sin(K*t), -z*K1*K1*K2*sin(K1*K*t));  // position二阶导数aw:W系下的加速度
+  Eigen::Vector3d position;
+  Eigen::Vector3d dp;  // v
+  Eigen::Vector3d ddp;  // a
+  if (t >= 0 && t <= 10) {
+    position = Eigen::Vector3d(13, 0.12*t*t, 0);
+    dp = Eigen::Vector3d(0, 0.24*t, 0);
+    ddp = Eigen::Vector3d(0, 0.24, 0);
+  } else if (t > 10 && t <= 13) {
+    position = Eigen::Vector3d(12+cos((t-10)*M_PI/6), 12+sin((t-10)*M_PI/6), 0);
+    dp = Eigen::Vector3d(-M_PI/6*sin((t-10)*M_PI/6), M_PI/6*cos((t-10)*M_PI/6), 0);
+    ddp = Eigen::Vector3d(-M_PI/6*M_PI/6*cos((t-10)*M_PI/6), -M_PI/6*M_PI/6*sin((t-10)*M_PI/6), 0);
+  } else if (t > 13 && t <= 21) {
+    position = Eigen::Vector3d(12-2.4*(t-13)+0.1*(t-13)*(t-13), 13, 0);
+    dp = Eigen::Vector3d(-2.4+0.2*(t-13), 0, 0);
+    ddp = Eigen::Vector3d(0.2, 0, 0);
+  } else if (t > 21 && t <= 35) {
+    position = Eigen::Vector3d(-0.8-0.8*(t-21), 13, 0);
+    dp = Eigen::Vector3d(-0.8, 0, 0);
+    ddp = Eigen::Vector3d(0, 0, 0);
+  } else if (t > 35 && t <= 37) {
+    position = Eigen::Vector3d(-12-sin((t-35)*M_PI/4), 12+cos((t-35)*M_PI/4), 0);
+    dp = Eigen::Vector3d(-M_PI/4*cos((t-35)*M_PI/4), -M_PI/4*sin((t-35)*M_PI/4), 0);
+    ddp = Eigen::Vector3d(M_PI/4*M_PI/4*sin((t-35)*M_PI/4), -M_PI/4*M_PI/4*cos((t-35)*M_PI/4), 0);
+  } else if (t > 37 && t <= 42) {
+    position = Eigen::Vector3d(-13, 12-0.8*(t-37), 0);
+    dp = Eigen::Vector3d(0, -0.8, 0);
+    ddp = Eigen::Vector3d(0, 0, 0);
+  } else if (t > 42 && t <= 54) {
+    position = Eigen::Vector3d(-13, -0.8*(t-42)-0.5*0.05*(t-42)*(t-42), 0);
+    dp = Eigen::Vector3d(0, -0.8-0.05*(t-42), 0);
+    ddp = Eigen::Vector3d(0, -0.05, 0);
+  } else if (t > 54 && t <= 57) {
+    position = Eigen::Vector3d(-12-cos((t-54)*M_PI/6), -13.2-sin((t-54)*M_PI/6), 0);
+    dp = Eigen::Vector3d(M_PI/6*sin((t-54)*M_PI/6), -M_PI/6*cos((t-54)*M_PI/6), 0);
+    ddp = Eigen::Vector3d(M_PI/6*M_PI/6*cos((t-54)*M_PI/6), M_PI/6*M_PI/6*sin((t-54)*M_PI/6), 0);
+  } else if (t > 57 && t <= 67) {
+    position = Eigen::Vector3d(-12+1.4*(t-57)+0.03*(t-57)*(t-57), -14.2, 0);
+    dp = Eigen::Vector3d(1.4+0.06*(t-57), 0, 0);
+    ddp = Eigen::Vector3d(0.06, 0, 0);
+  } else if (t > 67 && t <= 72) {
+    position = Eigen::Vector3d(5+2*(t-67)-0.12*(t-67)*(t-67), -14.2, 0);
+    dp = Eigen::Vector3d(2-0.24*(t-67), 0, 0);
+    ddp = Eigen::Vector3d(-0.24, 0, 0);
+  } else if (t > 72 && t <= 75) {
+    position = Eigen::Vector3d(12+sin((t-72)*M_PI/6), -13.2-cos((t-72)*M_PI/6), 0);
+    dp = Eigen::Vector3d(M_PI/6*cos((t-72)*M_PI/6), M_PI/6*sin((t-72)*M_PI/6), 0);
+    ddp = Eigen::Vector3d(-M_PI/6*M_PI/6*sin((t-72)*M_PI/6), M_PI/6*M_PI/6*cos((t-72)*M_PI/6), 0);
+  } else if (t > 75 && t <= 91) {
+    position = Eigen::Vector3d(13, -13.2+0.825*(t-75), 0);
+    dp = Eigen::Vector3d(0, 0.825, 0);
+    ddp = Eigen::Vector3d(0, 0, 0);
+  }
+  position += Eigen::Vector3d(0, 0, 1.5);
 
   /// Rotation
-  Eigen::Vector3d eulerAngles;
   double k_roll = 0.1;  // roll of body frame to world frame
   double k_pitch = 0.2;  // pitch of body frame to world frame
-  if (t < 10) {
-    eulerAngles = Eigen::Vector3d(k_roll*cos(t), k_pitch*sin(t), K*t);  // roll: [-0.1, 0.1], pitch: [-0.2, 0.2], yaw: [0, pi]
-  } else {
-    eulerAngles = Eigen::Vector3d(k_roll*cos(t), k_pitch*sin(t), K*t-2*M_PI);  // roll: [-0.1, 0.1], pitch: [-0.2, 0.2], yaw: [-pi, 0]
+  // Eigen::Vector3d eulerAngles(k_roll*cos(t), k_pitch*sin(t), 0);
+  // Eigen::Vector3d eulerAnglesRates(-k_roll*sin(t), k_pitch*cos(t), 0);  // eulerAngles的导数：W系下的欧拉角速度
+  Eigen::Vector3d eulerAngles(0, 0, 0);
+  Eigen::Vector3d eulerAnglesRates(0, 0, 0);  // eulerAngles的导数：W系下的欧拉角速度
+  if (t > 10 && t <= 13) {
+    eulerAngles += Eigen::Vector3d(0, 0, M_PI/6*(t-10));
+    eulerAnglesRates += Eigen::Vector3d(0, 0, M_PI/6);
+  } else if (t > 13 && t <= 35) {
+    eulerAngles += Eigen::Vector3d(0, 0, M_PI/2);
+  } else if (t > 35 && t <= 37) {
+    eulerAngles += Eigen::Vector3d(0, 0, M_PI/2+M_PI/4*(t-35));
+    eulerAnglesRates += Eigen::Vector3d(0, 0, M_PI/4);
+  } else if (t > 37 && t <= 54) {
+    eulerAngles += Eigen::Vector3d(0, 0, M_PI);
+  } else if (t > 54 && t <= 57) {
+    eulerAngles += Eigen::Vector3d(0, 0, -M_PI+M_PI/6*(t-54));
+    eulerAnglesRates += Eigen::Vector3d(0, 0, M_PI/6);
+  } else if (t > 57 && t <= 72) {
+    eulerAngles += Eigen::Vector3d(0, 0, -M_PI/2);
+  } else if (t > 72 && t <= 75) {
+    eulerAngles += Eigen::Vector3d(0, 0, -M_PI/2+M_PI/6*(t-72));
+    eulerAnglesRates += Eigen::Vector3d(0, 0, M_PI/6);
   }
-  Eigen::Vector3d eulerAnglesRates(-k_roll*sin(t), k_pitch*cos(t), K);  // eulerAngles的导数：W系下的欧拉角速度
   euler_angles_all_.insert(std::make_pair(t, eulerAngles));
   /// generate gyro data
   Eigen::Vector3d imu_gyro = eulerRates2bodyRates(eulerAngles) * eulerAnglesRates;  // euler rates trans to body gyro
 
   /// generate acc data
-  // Eigen::Matrix3d Rwb = euler2Rotation(eulerAngles);
   Eigen::Matrix3d Rwb;  // body frame to world frame
   /// 先绕x轴转动roll，再绕y轴转动pitch，最后绕z转动yaw
   Rwb = Eigen::AngleAxisd(eulerAngles[2], Eigen::Vector3d::UnitZ()) *

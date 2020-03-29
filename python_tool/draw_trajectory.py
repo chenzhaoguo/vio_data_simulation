@@ -19,8 +19,8 @@ pose_int_noise = []
 pose_int_noise = np.loadtxt(filepath + 'imu_int_pose_noise.txt', usecols = (5, 6, 7))
 ## position error
 diff_x = np.loadtxt(filepath + 'imu_int_pose.txt', usecols = (0))
-diff_position_no_noise = np.array(pose_int_no_noise) - np.array(pose_gt[1:4001])
-diff_position_noise = np.array(pose_int_noise) - np.array(pose_gt[1:4001])
+diff_position_no_noise = np.array(pose_int_no_noise) - np.array(pose_gt[1:18204])
+diff_position_noise = np.array(pose_int_noise) - np.array(pose_gt[1:18204])
 
 
 ## trajectory with imu(no noise)
