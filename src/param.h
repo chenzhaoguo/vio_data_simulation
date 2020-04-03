@@ -12,14 +12,14 @@ class Param {
   int cam_frequency = 30;
   double imu_timestep = 1.0/imu_frequency;
   double cam_timestep = 1.0/cam_frequency;
-  double t_start = 0.0;
-  double t_end = 20.0;  // 20s
+  double t_start = 0.0;  // s
+  double t_end = 40.0;
 
   /// noise
-  double acc_noise_sigma = 2.0e-2;   // 连续时间下acc高斯白噪声标准差  m/(s^2)*1/sqrt(Hz)
-  double gyro_noise_sigma = 1.7e-3;  // 连续时间下gyro高斯白噪声标准差  rad/s*1/sqrt(Hz)
-  double acc_bias_sigma = 3.0e-3;  // 连续时间下acc bias随机游走噪声标准差  m/(s^2)
-  double gyro_bias_sigma = 2.0e-5;  // 连续时间下gyro bias随机游走噪声标准差  rad/s
+  double acc_noise_sigma = 2.0e-3;   // 连续时间下acc高斯白噪声方差  m * s^-2 * 1/sqrt(Hz)
+  double gyro_noise_sigma = 1.7e-3;  // 连续时间下gyro高斯白噪声方差  rad * s^-1 * 1/sqrt(Hz)
+  double acc_bias_sigma = 3.0e-3;  // 连续时间下acc bias随机游走噪声方差  m * s^-3 * 1/sqrt(Hz)
+  double gyro_bias_sigma = 2.0e-5;  // 连续时间下gyro bias随机游走噪声方差  rad * s^-2 * 1/sqrt(Hz)
 
   double pixel_noise = 1;  // 1 pixel noise
 

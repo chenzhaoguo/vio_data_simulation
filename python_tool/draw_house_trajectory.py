@@ -14,7 +14,7 @@ filepath = os.path.abspath('..') + "/bin/"
 position = []
 position = np.loadtxt(filepath + 'imu_pose.txt', usecols = (5, 6, 7))
 ## plot trajectory groundtruth
-fig = plt.figure(num=1, figsize=(6, 4))
+fig = plt.figure(num=1, figsize=(8, 6))
 ax = fig.gca(projection='3d')
 ax.plot(position[:, 0], position[:, 1], position[:, 2], linewidth=1.0, color='k', label='trajectory_gt')
 ax.plot([position[0, 0]], [position[0, 1]], [position[0, 2]], 'o', markersize=4, color='r', label='start point')
@@ -38,15 +38,15 @@ with open(filepath + 'all_points.txt', 'r') as f:
         x.append(numbers_float[0])
         y.append(numbers_float[1])
         z.append(numbers_float[2])
-ax.scatter(x, y, z, s=10, color='g')
+ax.scatter(x, y, z, s=12, color='g')
 
 ## 将所有特征点中的其中18个特征点连线，形成house的形状
-s = filepath + '../landmarks_data/house_model/house.txt'
+s = filepath + '../landmarks_data/auditorium.txt'
 with open(s, 'r') as f:
     data = f.readlines()
     for line in data:
         odom = line.split()
         numbers_float = map(float, odom)
-        ax.plot([numbers_float[0], numbers_float[3]], [numbers_float[1], numbers_float[4]], [numbers_float[2], numbers_float[5]], linewidth=1.0, color='b')
+        ax.plot([numbers_float[0], numbers_float[3]], [numbers_float[1], numbers_float[4]], [numbers_float[2], numbers_float[5]], linestyle='--', linewidth=1.0, color='b')
 
 plt.show()

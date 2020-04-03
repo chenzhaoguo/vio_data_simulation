@@ -35,26 +35,26 @@ IMU::IMU(Param p) : param_(p) {
 
 MotionData IMU::MotionModel(double t) {
   /// param of motion
-  float ellipse_x = 15;
-  float ellipse_y = 20;
-  float z = 1;          // z轴做sin运动
-  float K1 = 10;        // z轴的正弦频率是x，y的k1倍
-  float K = M_PI / 10;  // 20*K = 2pi，由于我们采取的时间是20s, 系数K控制yaw正好旋转一圈，运动一周
+  float ellipse_x = 12;
+  float ellipse_y = 6;
+  float z = 0.3;  // z轴运动幅值
+  float freq_z = M_PI / 5;  // z轴运动频率
+  float K = M_PI / 20;  // 40*K = 2pi，系数K控制yaw正好旋转一圈，运动一周
 
   /// translation
-  Eigen::Vector3d position(ellipse_x*cos(K*t)+5, ellipse_y*sin(K*t)+5, z*sin(K1*K*t)+5);  // position twb: body frame in world frame
-  Eigen::Vector3d dp(-K*ellipse_x*sin(K*t), K*ellipse_y*cos(K*t), z*K1*K*cos(K1*K*t));  // position一阶导数vw: W系下的速度
+  Eigen::Vector3d position(ellipse_x*cos(K*t)+1, ellipse_y*sin(K*t), z*sin(freq_z*t)+1.5);  // position twb: body frame in world frame
+  Eigen::Vector3d dp(-K*ellipse_x*sin(K*t), K*ellipse_y*cos(K*t), z*freq_z*cos(freq_z*t));  // position一阶导数vw: W系下的速度
   double K2 = K*K;
-  Eigen::Vector3d ddp(-K2*ellipse_x*cos(K*t), -K2*ellipse_y*sin(K*t), -z*K1*K1*K2*sin(K1*K*t));  // position二阶导数aw:W系下的加速度
+  Eigen::Vector3d ddp(-K2*ellipse_x*cos(K*t), -K2*ellipse_y*sin(K*t), -z*freq_z*freq_z*sin(freq_z*t));  // position二阶导数aw:W系下的加速度
 
   /// Rotation
   Eigen::Vector3d eulerAngles;
   double k_roll = 0.1;  // roll of body frame to world frame
   double k_pitch = 0.2;  // pitch of body frame to world frame
-  if (t < 10) {
+  if (t <= 20) {
     eulerAngles = Eigen::Vector3d(k_roll*cos(t), k_pitch*sin(t), K*t);  // roll: [-0.1, 0.1], pitch: [-0.2, 0.2], yaw: [0, pi]
   } else {
-    eulerAngles = Eigen::Vector3d(k_roll*cos(t), k_pitch*sin(t), K*t-2*M_PI);  // roll: [-0.1, 0.1], pitch: [-0.2, 0.2], yaw: [-pi, 0]
+    eulerAngles = Eigen::Vector3d(k_roll*cos(t), k_pitch*sin(t), K*t-2*M_PI);  // roll: [-0.1, 0.1], pitch: [-0.2, 0.2], yaw: (-pi, 0]
   }
   Eigen::Vector3d eulerAnglesRates(-k_roll*sin(t), k_pitch*cos(t), K);  // eulerAngles的导数：W系下的欧拉角速度
   euler_angles_all_.insert(std::make_pair(t, eulerAngles));

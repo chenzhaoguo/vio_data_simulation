@@ -69,12 +69,6 @@ void CreatePointsLines(std::string filename, Points &points, Lines &lines) {
     lines.emplace_back(pt0, pt1);  // lines
   }
 
-  /// create more 3d points, you can comment this code
-  int n = points.size();
-  for (int j = 0; j < n; ++j) {
-    Eigen::Vector4d p = points[j] + Eigen::Vector4d(0.5, 0.5, -0.5, 0);
-    points.push_back(p);
-  }
   // std::cout << "points.size: " << points.size()
   //           << "\nlines.size: " << lines.size() << std::endl;  // 36 23
   /// save points
@@ -172,7 +166,7 @@ int main() {
   GenerateAndSaveImuDate(imuGen, params);
   
   /// 生成3d points
-  std::string file = "../landmarks_data/house_model/house.txt";
+  std::string file = "../landmarks_data/auditorium.txt";
   Points points;
   Lines lines;
   CreatePointsLines(file, points, lines);
