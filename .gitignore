@@ -1,5 +1,4 @@
 *.py[cod]
 build/
-bin/
 *~
 *.DS_Store
