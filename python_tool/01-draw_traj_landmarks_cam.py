@@ -12,7 +12,7 @@ import transformations as tf
 np.set_printoptions(suppress = True)
 filepath = os.path.abspath('..') + "/bin/"
 
-fig = plt.figure(num=1, figsize=(8, 6))
+fig = plt.figure(num=1, figsize=(7, 5))
 ax = fig.gca(projection='3d')
 
 ## read data from all_points.txt
@@ -43,7 +43,7 @@ position = []
 position = np.loadtxt(filepath + 'imu_pose.txt', usecols = (5, 6, 7))
 ## plot trajectory groundtruth
 ax.plot(position[:, 0], position[:, 1], position[:, 2], linewidth=1.0, color='k', label='trajectory')
-ax.plot([position[0, 0]], [position[0, 1]], [position[0, 2]], 'o', markersize=5, color='r', label='initial&end position')
+ax.plot([position[0, 0]], [position[0, 1]], [position[0, 2]], 'o', markersize=4, color='r', label='start&end point')
 
 
 ## 绘制所有时刻相机的位姿，每个位姿用3维坐标系表示
@@ -71,6 +71,6 @@ for i in range(0, 1200, 50):
 ax.set_xlabel('X [m]', fontsize=10)
 ax.set_ylabel('Y [m]', fontsize=10)
 ax.set_zlabel('Z [m]', fontsize=10)
-ax.tick_params(labelsize=9)
-ax.legend(loc='upper right', fontsize=8, edgecolor='k')
+ax.tick_params(labelsize=8)
+ax.legend(loc='upper right', fontsize=8, edgecolor='w')
 plt.show()
